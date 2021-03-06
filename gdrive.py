@@ -32,7 +32,7 @@ def main():
     drives = []
 
     params = {
-        'fields': 'nextPageToken, drives(id, name)',
+        'fields': 'nextPageToken, drives(id, name, restrictions)',
         'useDomainAdminAccess': True,
     }
     while True:
@@ -55,6 +55,9 @@ def main():
         while True:
             perms_res = service.permissions().list(**params).execute()
 
+            print(f"{drive['name']}: " +
+                f"domainUsersOnly: {drive['restrictions']['domainUsersOnly']} " +
+                f"driveMembersOnly: {drive['restrictions']['driveMembersOnly']}")
             for permission in perms_res.get('permissions', []):
                 print(f"{drive['name']},{permission['emailAddress']},{permission['role']},{permission['type']}")
 
